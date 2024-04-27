@@ -29,35 +29,24 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <#assign
-            known = SPRING_SECURITY_CONTEXT??
-            >
+            <#assign known = SPRING_SECURITY_CONTEXT??>
             <#if known>
-                <#assign
-                user = SPRING_SECURITY_CONTEXT.authentication.principal
-                name = user.getUsername()
-                >
-                <a href="/profile/${name}"
-                   class="text-light m-2 m-sm-0">Hello ${name}</a>
+                <#assign user = SPRING_SECURITY_CONTEXT.authentication.principal>
+                <a href="/profile"
+                   class="text-light m-2 m-sm-0">Profile</a>
 
-
-                <a href="/logout" class="btn btn-outline-info m-2"
-                   id="logout">Logout</a>
-
+                <a href="/logout" class="btn btn-outline-info m-2" id="logout">Logout</a>
             <#else>
-                <a href="/auth/login"
-                   class="btn btn-outline-info m-2">Login</a>
-                <a href="/auth/register"
-                   class="btn btn-outline-info m-2">Register</a>
+                <a href="/auth/login" class="btn btn-outline-info m-2">Login</a>
+                <a href="/auth/register" class="btn btn-outline-info m-2">Register</a>
             </#if>
         </div>
     </nav>
 
     <div class="container">
-        <#nested spring>
+        <#nested>
     </div>
 
     </body>
     </html>
-
 </#macro>

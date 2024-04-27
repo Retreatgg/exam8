@@ -53,4 +53,13 @@ public class FileDao {
                 )
         );
     }
+
+    public List<File> getFilesByAuthorId(Long id) {
+        String sql = """
+                select * from files
+                where author_id = ?
+                """;
+
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(File.class), id);
+    }
 }

@@ -18,11 +18,10 @@
                 <div class="row">
 
                     <div class=" col-md-auto ">
-                        <a href="http://localhost:8089/files/${file.id}" download>Download link</a>
-                        <a href="http://localhost:8089/files/${file.id}" downloadclass="
-                         btn-outlined btn-black text-muted"><img src="https://img.icons8.com/metro/26/000000/link.png"
+                        <a href="http://localhost:8089/files/${file.id}" class="
+                         btn-outlined btn-black text-muted" download><img src="https://img.icons8.com/metro/26/000000/link.png"
                                                                  width="17" height="17" id="plus">
-                            <small>download</small> </a>
+                            <small></small>Download</a>
 
                     </div>
 

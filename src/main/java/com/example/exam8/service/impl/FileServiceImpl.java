@@ -3,11 +3,13 @@ package com.example.exam8.service.impl;
 import com.example.exam8.dao.FileDao;
 import com.example.exam8.dto.FileDto;
 import com.example.exam8.model.File;
+import com.example.exam8.model.User;
 import com.example.exam8.service.FileService;
 import com.example.exam8.util.FileUtil;
 import com.example.exam8.util.UserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,15 +24,15 @@ public class FileServiceImpl implements FileService {
     private final FileDao fileDao;
 
     @Override
-    public void createFile(FileDto fileDto) {
-
+    public void createFile(Authentication auth, FileDto fileDto) {
+        User user = userUtil.getUserByAuth(auth);
         File file = new File();
 
         String fileName = fileUtil.saveUploadedFile(fileDto.getFile(), "/files");
         file.setName(fileDto.getName());
         file.setFileName(fileName);
         file.setStatus(fileDto.getStatus());
-        file.setAuthorId(3L);
+        file.setAuthorId(user.getId());
 
         fileDao.createFile(file);
     }
@@ -49,6 +51,11 @@ public class FileServiceImpl implements FileService {
     public ResponseEntity<?> downloadFile(Long id) {
         File file = getFile(id);
         return fileUtil.getOutputFile(file.getFileName(), "/files");
+    }
+
+    @Override
+    public List<File> getFilesByAuthorId(Long id) {
+        return fileDao.getFilesByAuthorId(id);
     }
 
 

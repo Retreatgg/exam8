@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: create table for private_files
+      author: Argen
+      changes:
+        - createTable:
+            tableName: private_files
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: file_name
+                  type: varchar(250)
+              - column:
+                  name: link_name
+                  type: varchar(200)
+              - column:
+                  name: enabled
+                  type: boolean

@@ -52,16 +52,14 @@ public class SecurityConfig {
                         .loginProcessingUrl("/auth/login")
                         .defaultSuccessUrl("/")
                         .failureUrl("/auth/login?error=true")
-//                        .failureHandler()
                         .permitAll())
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .permitAll())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/users").hasAuthority("ADMIN")
-                        .requestMatchers("/movies/**").hasAuthority("ADMIN")
-                        .requestMatchers("/api/**").permitAll()
+                        .requestMatchers("profile/**").hasAuthority("1")
+                        .requestMatchers("file/**").hasAuthority("1")
                         .anyRequest().permitAll()
                 )
                 .exceptionHandling(Customizer.withDefaults())

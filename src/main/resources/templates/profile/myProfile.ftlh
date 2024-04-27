@@ -6,66 +6,67 @@
                 <img class="img-fluid" src="https://picsum.photos/130/130?image=1027">
             </div>
             <div class="team-content">
-                <h3 class="name">Michele Miller</h3>
-                <h4 class="title">Web Developer</h4>
+                <h3 class="name">${user.email}</h3>
             </div>
             <ul class="social">
                 <li><a href="https://codepen.io/collection/XdWJOQ/" class="fa fa-facebook" aria-hidden="true"></a></li>
                 <li><a href="https://codepen.io/collection/XdWJOQ/" class="fa fa-twitter" aria-hidden="true"></a></li>
-                <li><a href="https://codepen.io/collection/XdWJOQ/" class="fa fa-google-plus" aria-hidden="true"></a></li>
+                <li><a href="https://codepen.io/collection/XdWJOQ/" class="fa fa-google-plus" aria-hidden="true"></a>
+                </li>
                 <li><a href="https://codepen.io/collection/XdWJOQ/" class="fa fa-linkedin" aria-hidden="true"></a></li>
             </ul>
         </div>
     </div>
     <h1 class="text-center">MY FILES</h1>
     <div class="card mt-5 border-5 pt-2 active pb-0 px-3">
-        <#list numbers as number>
+        <#list files as file>
             <div class="card-body ">
                 <div class="row">
 
                     <div class="col-12 ">
-                        <h4 class="card-title "><b>Program Title</b></h4>
-
-                    </div>
-                    <div class="col">
-                        <h6 class="card-subtitle mb-2 text-muted">
-                            <p class="card-text text-muted small ">
-                                <img src="https://img.icons8.com/metro/26/000000/star.png" class="mr-1 " width="19"
-                                     height="19" id="star"> <span class="vl mr-2 ml-0"></span>
-
-                                Created by <span class="font-weight-bold"> BBBootstrap Team</span> on 1 Nov , 2018</p>
-                        </h6>
+                        <h4 class="card-title "><b>${file.name}</b></h4>
                     </div>
 
                 </div>
 
             </div>
 
-            <div class="card-footer bg-white px-0 ">
-                <div class="row">
+            <#if file.status == "PRIVATE">
+                <div class="card-footer bg-white px-0 ">
+                    <div class="row">
+                        <h5>Status: ${file.status}</h5>
 
-                    <div class=" col-md-auto ">
-                        <a href="#" class="btn btn-outlined btn-black text-muted bg-transparent"
-                           data-wow-delay="0.7s"><img src="https://img.icons8.com/ios/50/000000/settings.png"
-                                                      width="19" height="19"> <small>SETTINGS</small></a>
+                        <div class=" col-md-auto ">
+                            <a href="http://localhost:8089/files/${file.id}" class="
+                         btn-outlined btn-black text-muted" download><img
+                                        src="https://img.icons8.com/metro/26/000000/link.png"
+                                        width="17" height="17" id="plus">
+                                <small></small>Download</a>
 
-                        <i class="mdi mdi-settings-outline"></i>
+                        </div>
 
+                        <button id="btn"><a href="/file/generate/link/${file.name}">Generate link</a></button>
 
-                        <a href="#" class="
-                         btn-outlined btn-black text-muted"><img src="https://img.icons8.com/metro/26/000000/link.png"
-                                                                 width="17" height="17" id="plus">
-                            <small>PROGRAM LINK</small> </a>
-
-
-                        <a href="#" class="btn btn-outlined btn-black text-muted "><img
-                                    src="https://img.icons8.com/metro/26/000000/more.png" width="20" height="20"
-                                    class="mr-2 more"><small>MORE</small></a>
-                        <span class="vl ml-3"></span>
                     </div>
-
                 </div>
-            </div>
+            <#else>
+                <div class="card-footer bg-white px-0 ">
+                    <div class="row">
+                        <h5>Status: ${file.status}</h5>
+
+                        <div class=" col-md-auto ">
+                            <a href="http://localhost:8089/files/${file.id}" class="
+                         btn-outlined btn-black text-muted" download><img
+                                        src="https://img.icons8.com/metro/26/000000/link.png"
+                                        width="17" height="17" id="plus">
+                                <small></small>Download</a>
+
+                        </div>
+
+                    </div>
+                </div>
+            </#if>
+
         </#list>
     </div>
     </div>

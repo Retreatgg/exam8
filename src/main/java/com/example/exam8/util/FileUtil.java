@@ -1,21 +1,14 @@
-package com.example.demo.util;
+package com.example.exam8.util;
 
-import com.example.demo.dao.UserDao;
-import com.example.demo.model.User;
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,9 +17,6 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -69,19 +59,17 @@ public class FileUtil {
         return new MockMultipartFile(avatarString, bytes) ;
     }
 
-    public ResponseEntity<?> getOutputFile(String fileName, String subDir, MediaType mediaType) {
+    public ResponseEntity<InputStreamResource> getOutputFile(String fileName, String subDir) {
         try {
-            byte[] image = Files.readAllBytes(Paths.get(UPLOAD_DIR + subDir + "/" + fileName));
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(mediaType);
-            headers.setContentDispositionFormData("attachment", fileName);
-            headers.setContentLength(image.length);
-
-            return new ResponseEntity<>(image, headers, HttpStatus.OK);
+            Path path = Paths.get(UPLOAD_DIR + subDir + "/" + fileName);
+            InputStreamResource resource = new InputStreamResource(Files.newInputStream(path));
+            MediaType mediaType = MediaType.parseMediaType(Files.probeContentType(path));
+            return ResponseEntity.ok()
+                    .contentType(mediaType)
+                    .body(new InputStreamResource(resource.getInputStream()));
         } catch (IOException e) {
             log.error("No file found:", e);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Image not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 }

@@ -1,7 +1,7 @@
-package com.example.demo.util;
+package com.example.exam8.util;
 
-import com.example.demo.dao.UserDao;
-import com.example.demo.model.User;
+import com.example.exam8.dao.UserDao;
+import com.example.exam8.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

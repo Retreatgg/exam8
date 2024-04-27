@@ -17,7 +17,7 @@
             </ul>
         </div>
     </div>
-    <h1 class="text-center">PUBLIC FILES</h1>
+    <h1 class="text-center">MY FILES</h1>
     <div class="card mt-5 border-5 pt-2 active pb-0 px-3">
         <#list numbers as number>
             <div class="card-body ">

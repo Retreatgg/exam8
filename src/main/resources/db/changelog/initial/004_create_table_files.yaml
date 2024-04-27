@@ -14,6 +14,9 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
+                  name: name
+                  type: varchar(150)
+              - column:
                   name: file_name
                   type: varchar(250)
               - column:
@@ -25,4 +28,4 @@ databaseChangeLog:
                     references: users(id)
               - column:
                   name: status
-                  type: boolean
+                  type: varchar(45)

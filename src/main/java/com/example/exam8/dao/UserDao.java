@@ -26,4 +26,14 @@ public class UserDao {
                 .addValue("enabled", user.getEnabled()));
     }
 
+
+    public Long returnIdByEmail(String email) {
+        String sql = """
+                select id from users
+                where email like ?
+                """;
+
+        return jdbcTemplate.queryForObject(sql, Long.class, email);
+    }
+
 }

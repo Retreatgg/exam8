@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserRoleModel {
+public class UserRole {
     private Long id;
     private Long userId;
     private Long roleId;

@@ -24,11 +24,13 @@ public class SecurityConfig {
 
     private final DataSource dataSource;
 
-    private static final String USER_QUERY = "select email, password, enabled from user_table where email = ?;";
+    private static final String USER_QUERY = "select email, password, enabled from users where email = ?;";
     private static final String AUTHORITIES_QUERY = """
-            select ua.user_email, a.role from user_authority ua, authorities a
-            where ua.authority_id = a.id
-            and ua.user_email = ?;
+            SELECT u.id, a.id
+            FROM users u
+                     INNER JOIN user_role ur ON u.id = ur.user_id
+                     INNER JOIN authorities a ON ur.role_id = a.id
+            WHERE u.email = ?;
             """;
 
     @Autowired

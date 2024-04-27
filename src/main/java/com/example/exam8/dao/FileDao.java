@@ -1,0 +1,4 @@
+package com.example.exam8.dao;
+
+public class FileDao {
+}

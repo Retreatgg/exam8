@@ -1,12 +1,12 @@
 package com.example.exam8.service.impl;
 
-import com.example.exam8.service.SomeService;
+import com.example.exam8.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class SomeServiceImpl implements SomeService {
+public class UserServiceImpl implements UserService {
 
 
 }

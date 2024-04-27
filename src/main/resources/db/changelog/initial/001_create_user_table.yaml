@@ -7,33 +7,14 @@ databaseChangeLog:
             tableName: users
             columns:
               - column:
-                  name: id
-                  type: long
-                  autoIncrement: true
+                  name: email
+                  type: varchar(120)
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: name
-                  type: varchar(45)
-              - column:
-                  name: surname
-                  type: varchar(45)
-              - column:
-                  name : age
-                  type: Integer
-              - column:
-                  name: email
-                  type: varchar(45)
-              - column:
                   name: password
-                  type: varchar(75)
+                  type: varchar(120)
               - column:
-                  name: phone_number
-                  type: varchar(45)
-              - column:
-                  name: avatar
-                  type: varchar(255)
-              - column:
-                  name: account_type
-                  type: varchar(45)
+                  name: enabled
+                  type: boolean

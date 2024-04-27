@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
 
@@ -29,7 +30,7 @@ public class SecurityConfig {
 
     private static final String AUTHORITY_QUERY = "SELECT u.email, r.AUTHORITY\n" +
             "FROM USER_ROLE ur\n" +
-            "         JOIN users u ON ur.USER_ID = u.id\n" +
+            "         JOIN users u ON ur.USER_EMAIL = u.EMAIL\n" +
             "         JOIN AUTHORITIES r ON ur.ROLE_ID = r.id\n" +
             "WHERE u.email = ?;";
 
@@ -44,28 +45,27 @@ public class SecurityConfig {
     }
 
     @Bean
-     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-         http
-                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                 .httpBasic(Customizer.withDefaults())
-                 .logout(AbstractHttpConfigurer::disable)
-                 .csrf(AbstractHttpConfigurer::disable)
-                 .authorizeHttpRequests(authorize -> authorize
-                         //.requestMatchers(HttpMethod.POST, "/resumes/**").hasAuthority("APPLICANT")
-                         //.requestMatchers(HttpMethod.GET, "/resumes/add").hasAnyAuthority("APPLICANT")
-                         .requestMatchers(HttpMethod.DELETE, "/resumes/**").hasAuthority("APPLICANT")
-                         .requestMatchers(HttpMethod.PUT, "/resumes/**").hasAuthority("APPLICANT")
-                         .requestMatchers(HttpMethod.PUT, "/vacancies/**").hasAuthority("EMPLOYER")
-                         .requestMatchers(HttpMethod.DELETE, "/vacancies/").hasAuthority("EMPLOYER")
-                         //requestMatchers(HttpMethod.POST, "/vacancies/**").hasAuthority("EMPLOYER")
-                         //.requestMatchers(HttpMethod.GET, "/vacancies/add").hasAuthority("EMPLOYER")
-                         .requestMatchers(HttpMethod.POST, "vacancies/respond").hasAuthority("APPLICANT")
-                         .requestMatchers(HttpMethod.GET, "/resumes/active").hasAuthority("EMPLOYER")
-                         .requestMatchers("/chat/**").hasAnyAuthority("EMPLOYER", "APPLICANT")
-                         .requestMatchers("profile/**").hasAnyAuthority("EMPLOYER", "APPLICANT")
-                         .requestMatchers(HttpMethod.GET, "vacancies/**").permitAll()
-                         .anyRequest().permitAll());
-
-         return http.build();
-     }
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+                .httpBasic(Customizer.withDefaults())
+                .formLogin(form -> form
+                        .loginPage("/auth/login")
+                        .loginProcessingUrl("/auth/login")
+                        .defaultSuccessUrl("/")
+                        .failureUrl("/auth/login?error=true")
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                        .permitAll())
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.POST, "/users").hasAuthority("ADMIN")
+                        .requestMatchers("/movies/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/**").permitAll()
+                        .anyRequest().permitAll()
+                )
+                .exceptionHandling(Customizer.withDefaults());
+        return http.build();
+    }
 }

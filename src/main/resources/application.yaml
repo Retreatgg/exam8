@@ -16,7 +16,7 @@ spring:
 
 logging:
   level:
-    root: DEBUG
+    root: debug
 
   file:
     name: logs/spring.log

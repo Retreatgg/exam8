@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - changeSet:
+      id: create table for Files
+      author: Argen
+      changes:
+        - createTable:
+            tableName: files
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: file_name
+                  type: varchar(250)
+              - column:
+                  name: author_id
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_author_id
+                    references: users(id)
+              - column:
+                  name: status
+                  type: boolean

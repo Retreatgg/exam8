@@ -24,23 +24,19 @@ public class SecurityConfig {
 
     private final DataSource dataSource;
 
-   private static final String USER_QUERY = "select email, password, enabled\n" +
-            "from users\n" +
-            "where email = ?;";
-
-    private static final String AUTHORITY_QUERY = "SELECT u.email, r.AUTHORITY\n" +
-            "FROM USER_ROLE ur\n" +
-            "         JOIN users u ON ur.USER_EMAIL = u.EMAIL\n" +
-            "         JOIN AUTHORITIES r ON ur.ROLE_ID = r.id\n" +
-            "WHERE u.email = ?;";
-
+    private static final String USER_QUERY = "select email, password, enabled from user_table where email = ?;";
+    private static final String AUTHORITIES_QUERY = """
+            select ua.user_email, a.role from user_authority ua, authorities a
+            where ua.authority_id = a.id
+            and ua.user_email = ?;
+            """;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
                 .usersByUsernameQuery(USER_QUERY)
-                .authoritiesByUsernameQuery(AUTHORITY_QUERY)
+                .authoritiesByUsernameQuery(AUTHORITIES_QUERY)
                 .passwordEncoder(new BCryptPasswordEncoder());
     }
 
@@ -54,6 +50,7 @@ public class SecurityConfig {
                         .loginProcessingUrl("/auth/login")
                         .defaultSuccessUrl("/")
                         .failureUrl("/auth/login?error=true")
+//                        .failureHandler()
                         .permitAll())
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
@@ -65,7 +62,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/**").permitAll()
                         .anyRequest().permitAll()
                 )
-                .exceptionHandling(Customizer.withDefaults());
+                .exceptionHandling(Customizer.withDefaults())
+        ;
         return http.build();
+
     }
 }

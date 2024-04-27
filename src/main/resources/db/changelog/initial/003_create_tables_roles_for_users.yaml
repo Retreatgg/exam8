@@ -7,12 +7,12 @@ databaseChangeLog:
             tableName: user_role
             columns:
               - column:
-                  name: user_email
-                  type: varchar(120)
+                  name: user_id
+                  type: long
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_user_email
-                    references: users(email)
+                    foreignKeyName: fk_user_id
+                    references: users(id)
               - column:
                   name: role_id
                   type: long
